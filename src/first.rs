@@ -1,3 +1,4 @@
+#![allow(clippy::redundant_field_names)]
 use std::mem;
 
 pub struct List {
@@ -7,6 +8,7 @@ enum Link {
     Empty,
     More(Box<Node>),
 }
+
 struct Node {
     elem: i32,
     next: Link,
@@ -47,6 +49,12 @@ impl Drop for List {
             // but its Node's `next` field has been set to Link::Empty
             // so no unbounded recursion occurs.
         }
+    }
+}
+
+impl Default for List {
+    fn default() -> Self {
+        Self { head: Link::Empty }
     }
 }
 
