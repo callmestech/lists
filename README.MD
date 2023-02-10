@@ -1,15 +1,64 @@
 ## Learning Rust With Entirely Too Many Linked Lists
+---
 - [x] 2. A Bad Stack
+  - [x] 2.1 Layout
+  - [x] 2.2 New
+  - [x] 2.3 Ownership 101
+  - [x] 2.4 Push
+  - [x] 2.5 Pop
+  - [x] 2.6 Testing
+  - [x] 2.7 Drop
+  - [x] 2.8 Final Code
 - [ ] 3. An Ok Stack
-   - [x] 3.1 Option
-   - [x] 3.2 Generic
-   - [x] 3.3 Peek
-   - [ ] 3.4
-   - [ ] 3.5
-   - [ ] 3.6   
+  - [x] 3.1 Option
+  - [x] 3.2 Generic
+  - [x] 3.3 Peek
+  - [ ] 3.4 Intolter
+  - [ ] 3.5 Iter
+  - [ ] 3.6 IterMut
+  - [ ] 3.7 Final Code  
 
 - [ ] 4. A Persistent Stack
+  - [ ] 4.1
+  - [ ] 4.2
+  - [ ] 4.3
+  - [ ] 4.4
+  - [ ] 4.5
 - [ ] 5. A Bad Safe Deque
+  - [ ] 5.1
+  - [ ] 5.2
+  - [ ] 5.3
+  - [ ] 5.4
+  - [ ] 5.5
+  - [ ] 5.6
+  - [ ] 5.7
 - [ ] 6. An Ok Unsafe Deque
+  - [ ] 6.1
+  - [ ] 6.2
+  - [ ] 6.3
+  - [ ] 6.4
+  - [ ] 6.5
+  - [ ] 6.6
+  - [ ] 6.7
+  - [ ] 6.8
+  - [ ] 6.9
 - [ ] 7. A Production Unsafe Deque
+  - [ ] 7.1
+  - [ ] 7.2
+  - [ ] 7.3
+  - [ ] 7.4
+  - [ ] 7.5
+  - [ ] 7.6
+  - [ ] 7.7
+  - [ ] 7.8
+  - [ ] 7.9
+  - [ ] 7.10
+  - [ ] 7.11
+  - [ ] 7.12
 - [ ] 8. A Bunch of Silly Lists
+  - [ ] 8.1
+  - [ ] 8.2
+
+
+---
+A [link](https://rust-unofficial.github.io/too-many-lists/) to the source
