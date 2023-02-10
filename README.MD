@@ -13,7 +13,7 @@
   - [x] 3.1 Option
   - [x] 3.2 Generic
   - [x] 3.3 Peek
-  - [ ] 3.4 Intolter
+  - [x] 3.4 IntoIter
   - [ ] 3.5 Iter
   - [ ] 3.6 IterMut
   - [ ] 3.7 Final Code  
