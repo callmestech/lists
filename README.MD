@@ -14,7 +14,9 @@
   - [x] 3.2 Generic
   - [x] 3.3 Peek
   - [x] 3.4 IntoIter
-  - [ ] 3.5 Iter
+  - [x] 3.5 Iter
+  
+    "Lifetimes can scare off a lot of people because they're a change to something we've known and loved since the dawn of programming. We've actually managed to dodge lifetimes so far, even though they've been tangled throughout our programs this whole time."
   - [ ] 3.6 IterMut
   - [ ] 3.7 Final Code  
 
