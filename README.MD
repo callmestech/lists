@@ -9,14 +9,14 @@
   - [x] 2.6 Testing
   - [x] 2.7 Drop
   - [x] 2.8 Final Code
-- [ ] 3. An Ok Stack
+- [x] 3. An Ok Stack
   - [x] 3.1 Option
   - [x] 3.2 Generic
   - [x] 3.3 Peek
   - [x] 3.4 IntoIter
   - [x] 3.5 Iter
   - [x] 3.6 IterMut
-  - [ ] 3.7 Final Code  
+  - [x] 3.7 Final Code  
 
 - [ ] 4. A Persistent Stack
   - [ ] 4.1
