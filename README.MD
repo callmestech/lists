@@ -17,13 +17,12 @@
   - [x] 3.5 Iter
   - [x] 3.6 IterMut
   - [x] 3.7 Final Code  
-
 - [ ] 4. A Persistent Stack
-  - [ ] 4.1
-  - [ ] 4.2
-  - [ ] 4.3
-  - [ ] 4.4
-  - [ ] 4.5
+  - [x] 4.1 Layout
+  - [ ] 4.2 Basics
+  - [ ] 4.3 Drop
+  - [ ] 4.4 Arc
+  - [ ] 4.5 Final Code
 - [ ] 5. A Bad Safe Deque
   - [ ] 5.1
   - [ ] 5.2
