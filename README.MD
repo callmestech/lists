@@ -21,8 +21,8 @@
   - [x] 4.1 Layout
   - [x] 4.2 Basics
   - [x] 4.3 Drop
-  - [ ] 4.4 Arc
-  - [ ] 4.5 Final Code
+  - [x] 4.4 Arc
+  - [x] 4.5 Final Code
 - [ ] 5. A Bad Safe Deque
   - [ ] 5.1
   - [ ] 5.2
