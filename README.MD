@@ -19,8 +19,8 @@
   - [x] 3.7 Final Code  
 - [ ] 4. A Persistent Stack
   - [x] 4.1 Layout
-  - [ ] 4.2 Basics
-  - [ ] 4.3 Drop
+  - [x] 4.2 Basics
+  - [x] 4.3 Drop
   - [ ] 4.4 Arc
   - [ ] 4.5 Final Code
 - [ ] 5. A Bad Safe Deque
