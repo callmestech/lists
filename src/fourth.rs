@@ -1,4 +1,4 @@
-use std::cell::RefCell;
+use std::cell::{Ref, RefCell};
 use std::rc::Rc;
 
 pub struct List<T> {
@@ -71,6 +71,12 @@ impl<T> List<T> {
             }
             Rc::try_unwrap(old_head).ok().unwrap().into_inner().elem
         })
+    }
+
+    pub fn peek_front(&self) -> Option<Ref<T>> {
+        self.head
+            .as_ref()
+            .map(|node| Ref::map(node.borrow(), |node| &node.elem))
     }
 }
 
