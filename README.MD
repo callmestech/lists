@@ -26,7 +26,7 @@
 - [ ] 5. A Bad Safe Deque
   - [x] 5.1 Layout
   - [x] 5.2 Building Up
-  - [ ] 5.3 
+  - [x] 5.3 Breaking
   - [ ] 5.4
   - [ ] 5.5
   - [ ] 5.6
