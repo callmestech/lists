@@ -106,7 +106,7 @@ mod test {
         assert_eq!(list.pop_front(), Some(3));
         assert_eq!(list.pop_front(), Some(2));
 
-        // pust some more just to make sure nothing's corrupted
+        // push some more just to make sure nothing's corrupted
         list.push_front(4);
         list.push_front(5);
 
@@ -117,5 +117,18 @@ mod test {
         // check exhaustion
         assert_eq!(list.pop_front(), Some(1));
         assert_eq!(list.pop_front(), None);
+    }
+
+    #[test]
+    fn peek() {
+        let mut list = List::new();
+        assert!(list.peek_front().is_none());
+
+        // populate list
+        list.push_front(1);
+        list.push_front(2);
+        list.push_front(3);
+
+        assert_eq!(&*list.peek_front().unwrap(), &3);
     }
 }
