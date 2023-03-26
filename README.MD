@@ -28,7 +28,7 @@
   - [x] 5.2 Building Up
   - [x] 5.3 Breaking
   - [x] 5.4 Peeking
-  - [ ] 5.5
+  - [x] 5.5 Symmetric Junk
   - [ ] 5.6
   - [ ] 5.7
 - [ ] 6. An Ok Unsafe Deque
