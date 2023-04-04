@@ -23,16 +23,16 @@
   - [x] 4.3 Drop
   - [x] 4.4 Arc
   - [x] 4.5 Final Code
-- [ ] 5. A Bad Safe Deque
+- [x] 5. A Bad Safe Deque
   - [x] 5.1 Layout
   - [x] 5.2 Building Up
   - [x] 5.3 Breaking
   - [x] 5.4 Peeking
   - [x] 5.5 Symmetric Junk
-  - [ ] 5.6
-  - [ ] 5.7
+  - [x] 5.6 Iteration
+  - [x] 5.7 Final Code
 - [ ] 6. An Ok Unsafe Deque
-  - [ ] 6.1
+  - [x] 6.1 Layout
   - [ ] 6.2
   - [ ] 6.3
   - [ ] 6.4
