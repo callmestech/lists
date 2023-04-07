@@ -33,8 +33,8 @@
   - [x] 5.7 Final Code
 - [ ] 6. An Ok Unsafe Deque
   - [x] 6.1 Layout
-  - [ ] 6.2
-  - [ ] 6.3
+  - [x] 6.2 Unsafe
+  - [x] 6.3 Basics
   - [ ] 6.4
   - [ ] 6.5
   - [ ] 6.6
