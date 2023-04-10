@@ -35,10 +35,10 @@
   - [x] 6.1 Layout
   - [x] 6.2 Unsafe
   - [x] 6.3 Basics
-  - [ ] 6.4
-  - [ ] 6.5
-  - [ ] 6.6
-  - [ ] 6.7
+  - [x] 6.4 Miri
+  - [x] 6.5 Stacked Borrows
+  - [x] 6.6 Testing Stacked Borrows
+  - [x] 6.7 Layout + Basics Redux
   - [ ] 6.8
   - [ ] 6.9
 - [ ] 7. A Production Unsafe Deque
