@@ -31,7 +31,7 @@
   - [x] 5.5 Symmetric Junk
   - [x] 5.6 Iteration
   - [x] 5.7 Final Code
-- [ ] 6. An Ok Unsafe Deque
+- [x] 6. An Ok Unsafe Deque
   - [x] 6.1 Layout
   - [x] 6.2 Unsafe
   - [x] 6.3 Basics
@@ -39,8 +39,8 @@
   - [x] 6.5 Stacked Borrows
   - [x] 6.6 Testing Stacked Borrows
   - [x] 6.7 Layout + Basics Redux
-  - [ ] 6.8
-  - [ ] 6.9
+  - [x] 6.8 Extras
+  - [x] 6.9 Final Code
 - [ ] 7. A Production Unsafe Deque
   - [ ] 7.1
   - [ ] 7.2
