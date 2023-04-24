@@ -42,8 +42,8 @@
   - [x] 6.8 Extras
   - [x] 6.9 Final Code
 - [ ] 7. A Production Unsafe Deque
-  - [ ] 7.1
-  - [ ] 7.2
+  - [x] 7.1 Layout
+  - [x] 7.2 Variance and Subtyping
   - [ ] 7.3
   - [ ] 7.4
   - [ ] 7.5
