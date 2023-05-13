@@ -44,7 +44,7 @@
 - [ ] 7. A Production Unsafe Deque
   - [x] 7.1 Layout
   - [x] 7.2 Variance and Subtyping
-  - [ ] 7.3
+  - [x] 7.3 Basics
   - [ ] 7.4
   - [ ] 7.5
   - [ ] 7.6
