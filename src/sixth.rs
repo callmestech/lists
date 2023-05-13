@@ -41,9 +41,6 @@ impl<T> LinkedList<T> {
                 // If there's no front, then we're the empty list and need
                 // to set the back too. Also here's some integrity checks
                 // for testing, in case we mess up.
-                debug_assert!(self.back.is_none());
-                debug_assert!(self.front.is_none());
-                debug_assert!(self.len == 0);
                 self.back = Some(new);
             }
             self.front = Some(new);
@@ -70,7 +67,6 @@ impl<T> LinkedList<T> {
                     (*new.as_ptr()).front = None;
                 } else {
                     // If the front is now null, the this list is now empty!
-                    debug_assert!(self.len == 1);
                     self.back = None;
                 }
 

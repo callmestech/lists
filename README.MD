@@ -45,7 +45,7 @@
   - [x] 7.1 Layout
   - [x] 7.2 Variance and Subtyping
   - [x] 7.3 Basics
-  - [ ] 7.4
+  - [x] 7.4 Panic Safety
   - [ ] 7.5
   - [ ] 7.6
   - [ ] 7.7
