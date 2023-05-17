@@ -79,6 +79,94 @@ impl<T> LinkedList<T> {
     pub fn len(&self) -> usize {
         self.len
     }
+
+    pub fn front(&self) -> Option<&T> {
+        unsafe { Some(&(*self.front?.as_ptr()).elem) }
+    }
+
+    pub fn front_mut(&mut self) -> Option<&mut T> {
+        unsafe { self.front.map(|node| &mut (*node.as_ptr()).elem) }
+    }
+
+    pub fn back(&self) -> Option<&T> {
+        unsafe { Some(&(*self.back?.as_ptr()).elem) }
+    }
+
+    pub fn back_mut(&mut self) -> Option<&mut T> {
+        unsafe { self.back.map(|node| &mut (*node.as_ptr()).elem) }
+    }
+
+    pub fn iter(&self) -> Iter<T> {
+        Iter {
+            front: self.front,
+            back: self.back,
+            len: self.len,
+            _boo: PhantomData,
+        }
+    }
+}
+
+impl<T> Drop for LinkedList<T> {
+    fn drop(&mut self) {
+        // Pop until we have to stop
+        while let Some(_) = self.pop_front() {}
+    }
+}
+
+pub struct Iter<'a, T> {
+    front: Link<T>,
+    back: Link<T>,
+    len: usize,
+    _boo: PhantomData<&'a T>,
+}
+
+impl<'a, T> IntoIterator for &'a LinkedList<T> {
+    type IntoIter = Iter<'a, T>;
+    type Item = &'a T;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.iter()
+    }
+}
+
+impl<'a, T> Iterator for Iter<'a, T> {
+    type Item = &'a T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.len > 0 {
+            self.front.map(|node| unsafe {
+                self.len -= 1;
+                self.front = (*node.as_ptr()).back;
+                &(*node.as_ptr()).elem
+            })
+        } else {
+            None
+        }
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        (self.len, Some(self.len))
+    }
+}
+
+impl<'a, T> DoubleEndedIterator for Iter<'a, T> {
+    fn next_back(&mut self) -> Option<Self::Item> {
+        if self.len > 0 {
+            self.back.map(|node| unsafe {
+                self.len -= 1;
+                self.back = (*node.as_ptr()).front;
+                &(*node.as_ptr()).elem
+            })
+        } else {
+            None
+        }
+    }
+}
+
+impl<'a, T> ExactSizeIterator for Iter<'a, T> {
+    fn len(&self) -> usize {
+        self.len
+    }
 }
 
 #[cfg(test)]
