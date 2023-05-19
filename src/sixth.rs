@@ -151,12 +151,52 @@ impl<T> LinkedList<T> {
             _boo: PhantomData,
         }
     }
+
+    pub fn is_empty(&self) -> bool {
+        self.len == 0
+    }
+
+    pub fn clear(&mut self) {
+        while let Some(_) = self.pop_front() {}
+    }
 }
 
 impl<T> Drop for LinkedList<T> {
     fn drop(&mut self) {
         // Pop until we have to stop
         while let Some(_) = self.pop_front() {}
+    }
+}
+
+impl<T> Default for LinkedList<T> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl<T: Clone> Clone for LinkedList<T> {
+    fn clone(&self) -> Self {
+        let mut buf = Self::new();
+        for item in self {
+            buf.push_back(item.clone());
+        }
+        buf
+    }
+}
+
+impl<T> Extend<T> for LinkedList<T> {
+    fn extend<I: IntoIterator<Item = T>>(&mut self, iter: I) {
+        for item in iter {
+            self.push_back(item);
+        }
+    }
+}
+
+impl<T> FromIterator<T> for LinkedList<T> {
+    fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> Self {
+        let mut list = Self::new();
+        list.extend(iter);
+        list
     }
 }
 
