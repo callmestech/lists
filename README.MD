@@ -46,7 +46,7 @@
   - [x] 7.2 Variance and Subtyping
   - [x] 7.3 Basics
   - [x] 7.4 Panic Safety
-  - [ ] 7.5
+  - [x] 7.5 Boring Combinatorics
   - [ ] 7.6
   - [ ] 7.7
   - [ ] 7.8

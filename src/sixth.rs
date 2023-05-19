@@ -174,6 +174,10 @@ pub struct IterMut<'a, T> {
     _boo: PhantomData<&'a mut T>,
 }
 
+pub struct IntoIter<T> {
+    list: LinkedList<T>,
+}
+
 impl<'a, T> IntoIterator for &'a LinkedList<T> {
     type IntoIter = Iter<'a, T>;
     type Item = &'a T;
@@ -212,6 +216,18 @@ impl<'a, T> Iterator for Iter<'a, T> {
     }
 }
 
+impl<T> Iterator for IntoIter<T> {
+    type Item = T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.list.pop_front()
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        (self.list.len, Some(self.list.len))
+    }
+}
+
 impl<'a, T> DoubleEndedIterator for Iter<'a, T> {
     fn next_back(&mut self) -> Option<Self::Item> {
         if self.len > 0 {
@@ -237,6 +253,12 @@ impl<'a, T> DoubleEndedIterator for IterMut<'a, T> {
         } else {
             None
         }
+    }
+}
+
+impl<T> DoubleEndedIterator for IntoIter<T> {
+    fn next_back(&mut self) -> Option<Self::Item> {
+        self.list.pop_back()
     }
 }
 
@@ -269,6 +291,12 @@ impl<'a, T> ExactSizeIterator for Iter<'a, T> {
 impl<'a, T> ExactSizeIterator for IterMut<'a, T> {
     fn len(&self) -> usize {
         self.len
+    }
+}
+
+impl<T> ExactSizeIterator for IntoIter<T> {
+    fn len(&self) -> usize {
+        self.list.len
     }
 }
 
