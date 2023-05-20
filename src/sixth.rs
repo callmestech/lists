@@ -1,3 +1,5 @@
+use std::fmt::{self, Debug};
+use std::hash::{Hash, Hasher};
 use std::{marker::PhantomData, ptr::NonNull};
 
 pub struct LinkedList<T> {
@@ -200,6 +202,45 @@ impl<T> FromIterator<T> for LinkedList<T> {
     }
 }
 
+impl<T: Debug> Debug for LinkedList<T> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_list().entries(self).finish()
+    }
+}
+
+impl<T: PartialEq> PartialEq for LinkedList<T> {
+    fn eq(&self, other: &Self) -> bool {
+        self.len == other.len && self.iter().eq(other.iter())
+    }
+
+    fn ne(&self, other: &Self) -> bool {
+        self.len == other.len || self.iter().ne(other.iter())
+    }
+}
+
+impl<T: Eq> Eq for LinkedList<T> {}
+
+impl<T: PartialOrd> PartialOrd for LinkedList<T> {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        self.iter().partial_cmp(other.iter())
+    }
+}
+
+impl<T: Ord> Ord for LinkedList<T> {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.iter().cmp(other.iter())
+    }
+}
+
+impl<T: Hash> Hash for LinkedList<T> {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.len().hash(state);
+        for i in self {
+            i.hash(state);
+        }
+    }
+}
+
 pub struct Iter<'a, T> {
     front: Link<T>,
     back: Link<T>,
@@ -342,7 +383,17 @@ impl<T> ExactSizeIterator for IntoIter<T> {
 
 #[cfg(test)]
 mod test {
+    use std::collections::HashMap;
+
     use super::LinkedList;
+
+    fn generate_test() -> LinkedList<i32> {
+        list_from(&[0, 1, 2, 3, 4, 5, 6])
+    }
+
+    fn list_from<T: Clone>(v: &[T]) -> LinkedList<T> {
+        v.iter().map(|elem| (*elem).clone()).collect()
+    }
 
     #[test]
     fn test_basic_front() {
@@ -382,5 +433,57 @@ mod test {
         assert_eq!(list.len(), 0);
         assert_eq!(list.pop_front(), None);
         assert_eq!(list.len(), 0);
+    }
+
+    #[test]
+    fn test_iterator() {
+        let m = generate_test();
+        for (i, elem) in m.iter().enumerate() {
+            assert_eq!(i as i32, *elem)
+        }
+        let mut n = LinkedList::new();
+        assert_eq!(n.iter().next(), None);
+        n.push_front(4);
+        let mut it = n.iter();
+        assert_eq!(it.size_hint(), (1, Some(1)));
+        assert_eq!(it.next().unwrap(), &4);
+        assert_eq!(it.size_hint(), (0, Some(0)));
+        assert_eq!(it.next(), None);
+    }
+
+    #[test]
+    fn test_debug() {
+        let list: LinkedList<i32> = (0..10).collect();
+        assert_eq!(format!("{:?}", list), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]");
+
+        let list: LinkedList<&str> = vec!["just", "one", "test", "more"]
+            .iter()
+            .copied()
+            .collect();
+
+        assert_eq!(format!("{:?}", list), r#"["just", "one", "test", "more"]"#);
+    }
+
+    #[test]
+    fn test_hashmap() {
+        // Check that HashMap works with this as a key
+
+        let list1: LinkedList<i32> = (0..10).collect();
+        let list2: LinkedList<i32> = (1..11).collect();
+
+        let mut map = HashMap::new();
+
+        assert_eq!(map.insert(list1.clone(), "list1"), None);
+        assert_eq!(map.insert(list2.clone(), "list2"), None);
+
+        assert_eq!(map.len(), 2);
+
+        assert_eq!(map.get(&list1), Some(&"list1"));
+        assert_eq!(map.get(&list2), Some(&"list2"));
+
+        assert_eq!(map.remove(&list1), Some("list1"));
+        assert_eq!(map.remove(&list2), Some("list2"));
+
+        assert!(map.is_empty())
     }
 }
