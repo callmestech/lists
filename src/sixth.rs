@@ -452,6 +452,63 @@ mod test {
     }
 
     #[test]
+    fn test_eq() {
+        let mut n: LinkedList<u8> = list_from(&[]);
+        let mut m = list_from(&[]);
+        assert!(n == m);
+        n.push_front(1);
+        assert!(n != m);
+        m.push_back(1);
+        assert!(n == m);
+
+        let n = list_from(&[2, 3, 4]);
+        let m = list_from(&[1, 2, 3]);
+        assert!(n != m);
+    }
+
+    #[test]
+    fn test_ord() {
+        let n = list_from(&[]);
+        let m = list_from(&[1, 2, 3]);
+        assert!(n < m);
+        assert!(m > n);
+        assert!(n <= n);
+        assert!(n >= n);
+    }
+
+    #[test]
+    fn test_ord_nan() {
+        let nan = 0.0f64 / 0.0;
+        let n = list_from(&[nan]);
+        let m = list_from(&[nan]);
+        assert!(!(n < m));
+        assert!(!(n > m));
+        assert!(!(n <= m));
+        assert!(!(n >= m));
+
+        let n = list_from(&[nan]);
+        let one = list_from(&[1.0f64]);
+        assert!(!(n < one));
+        assert!(!(n > one));
+        assert!(!(n <= one));
+        assert!(!(n >= one));
+
+        let u = list_from(&[1.0f64, 2.0, nan]);
+        let v = list_from(&[1.0f64, 2.0, 3.0]);
+        assert!(!(u < v));
+        assert!(!(u > v));
+        assert!(!(u <= v));
+        assert!(!(u >= v));
+
+        let s = list_from(&[1.0f64, 2.0, 4.0, 2.0]);
+        let t = list_from(&[1.0f64, 2.0, 3.0, 2.0]);
+        assert!(!(s < t));
+        assert!(s > one);
+        assert!(!(s <= one));
+        assert!(s >= one);
+    }
+
+    #[test]
     fn test_debug() {
         let list: LinkedList<i32> = (0..10).collect();
         assert_eq!(format!("{:?}", list), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]");
