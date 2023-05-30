@@ -452,6 +452,79 @@ mod test {
     }
 
     #[test]
+    fn test_iterator_double_end() {
+        let mut n = LinkedList::new();
+        assert_eq!(n.iter().next(), None);
+        n.push_front(4);
+        n.push_front(5);
+        n.push_front(6);
+        let mut it = n.iter();
+        assert_eq!(it.size_hint(), (3, Some(3)));
+        assert_eq!(it.next().unwrap(), &6);
+        assert_eq!(it.size_hint(), (2, Some(2)));
+        assert_eq!(it.next_back().unwrap(), &4);
+        assert_eq!(it.size_hint(), (1, Some(1)));
+        assert_eq!(it.next_back().unwrap(), &5);
+        assert_eq!(it.next_back(), None);
+        assert_eq!(it.next(), None);
+    }
+
+    #[test]
+    fn test_rev_iter() {
+        let m = generate_test();
+        for (i, elem) in m.iter().rev().enumerate() {
+            assert_eq!(6 - i as i32, *elem);
+        }
+        let mut n = LinkedList::new();
+        assert_eq!(n.iter().rev().next(), None);
+        n.push_front(4);
+        let mut it = n.iter().rev();
+        assert_eq!(it.size_hint(), (1, Some(1)));
+        assert_eq!(it.next().unwrap(), &4);
+        assert_eq!(it.size_hint(), (0, Some(0)));
+        assert_eq!(it.next(), None);
+    }
+
+    #[test]
+    fn test_mut_iter() {
+        let mut m = generate_test();
+        let mut len = m.len();
+        for (i, elt) in m.iter_mut().enumerate() {
+            assert_eq!(i as i32, *elt);
+            len -= 1;
+        }
+        assert_eq!(len, 0);
+        let mut n = LinkedList::new();
+        assert!(n.iter_mut().next().is_none());
+        n.push_front(4);
+        n.push_back(5);
+        let mut it = n.iter_mut();
+        assert_eq!(it.size_hint(), (2, Some(2)));
+        assert!(it.next().is_some());
+        assert!(it.next().is_some());
+        assert_eq!(it.size_hint(), (0, Some(0)));
+        assert!(it.next().is_none());
+    }
+
+    #[test]
+    fn test_iterator_mut_double_end() {
+        let mut n = LinkedList::new();
+        assert!(n.iter_mut().next_back().is_none());
+        n.push_front(4);
+        n.push_front(5);
+        n.push_front(6);
+        let mut it = n.iter_mut();
+        assert_eq!(it.size_hint(), (3, Some(3)));
+        assert_eq!(*it.next().unwrap(), 6);
+        assert_eq!(it.size_hint(), (2, Some(2)));
+        assert_eq!(*it.next_back().unwrap(), 4);
+        assert_eq!(it.size_hint(), (1, Some(1)));
+        assert_eq!(*it.next_back().unwrap(), 5);
+        assert!(it.next_back().is_none());
+        assert!(it.next().is_none());
+    }
+
+    #[test]
     fn test_eq() {
         let mut n: LinkedList<u8> = list_from(&[]);
         let mut m = list_from(&[]);
