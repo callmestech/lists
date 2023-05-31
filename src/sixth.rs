@@ -195,6 +195,14 @@ impl<T> LinkedList<T> {
             x
         }
     }
+
+    /// ```compile_fail
+    /// use lists::sixth::IterMut;
+    ///
+    /// fn iter_mut_covariant<'i, 'a, T>(x: IterMut<'i, &'static T>) -> IterMut<'i, &'a T> { x }
+    /// ```
+    #[allow(dead_code)]
+    fn iter_mut_invariant() {}
 }
 
 impl<T> Drop for LinkedList<T> {
@@ -414,6 +422,15 @@ impl<T> ExactSizeIterator for IntoIter<T> {
         self.list.len
     }
 }
+
+unsafe impl<T: Send> Send for LinkedList<T> {}
+unsafe impl<T: Sync> Sync for LinkedList<T> {}
+
+unsafe impl<'a, T: Send> Send for Iter<'a, T> {}
+unsafe impl<'a, T: Sync> Sync for Iter<'a, T> {}
+
+unsafe impl<'a, T: Send> Send for IterMut<'a, T> {}
+unsafe impl<'a, T: Sync> Sync for IterMut<'a, T> {}
 
 #[cfg(test)]
 mod test {

@@ -49,7 +49,7 @@
   - [x] 7.5 Boring Combinatorics
   - [x] 7.6 Filling in Random Bits
   - [x] 7.7 Testing
-  - [ ] 7.8
+  - [x] 7.8 Send, Sync, and Compile Tests
   - [ ] 7.9
   - [ ] 7.10
   - [ ] 7.11
