@@ -1,5 +1,6 @@
 use std::fmt::{self, Debug};
 use std::hash::{Hash, Hasher};
+use std::io::Cursor;
 use std::{marker::PhantomData, ptr::NonNull};
 
 pub struct LinkedList<T> {
@@ -160,6 +161,39 @@ impl<T> LinkedList<T> {
 
     pub fn clear(&mut self) {
         while let Some(_) = self.pop_front() {}
+    }
+
+    #[allow(dead_code)]
+    fn assert_properties() {
+        fn is_send<T: Send>() {}
+        fn is_sync<T: Sync>() {}
+
+        is_send::<LinkedList<i32>>();
+        is_sync::<LinkedList<i32>>();
+
+        is_send::<IntoIter<i32>>();
+        is_sync::<IntoIter<i32>>();
+
+        is_send::<Iter<i32>>();
+        is_sync::<Iter<i32>>();
+
+        is_send::<IterMut<i32>>();
+        is_sync::<IterMut<i32>>();
+
+        is_send::<Cursor<i32>>();
+        is_sync::<Cursor<i32>>();
+
+        fn linked_list_covariant<'a, T>(x: LinkedList<&'static T>) -> LinkedList<&'a T> {
+            x
+        }
+
+        fn iter_covariant<'i, 'a, T>(x: Iter<'i, &'static T>) -> Iter<'i, &'a T> {
+            x
+        }
+
+        fn into_iter_covariant<'a, T>(x: IntoIter<&'static T>) -> IntoIter<&'a T> {
+            x
+        }
     }
 }
 
