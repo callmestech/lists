@@ -50,7 +50,7 @@
   - [x] 7.6 Filling in Random Bits
   - [x] 7.7 Testing
   - [x] 7.8 Send, Sync, and Compile Tests
-  - [ ] 7.9
+  - [x] 7.9 An Introduction to Cursors
   - [ ] 7.10
   - [ ] 7.11
   - [ ] 7.12

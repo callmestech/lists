@@ -10,6 +10,12 @@ pub struct LinkedList<T> {
     _boo: PhantomData<T>,
 }
 
+pub struct CursorMut<'a, T> {
+    cur: Link<T>,
+    list: &'a mut LinkedList<T>,
+    index: Option<usize>,
+}
+
 type Link<T> = Option<NonNull<Node<T>>>;
 
 struct Node<T> {
@@ -25,6 +31,14 @@ impl<T> LinkedList<T> {
             back: None,
             len: 0,
             _boo: PhantomData,
+        }
+    }
+
+    pub fn cursor_mut(&mut self) -> CursorMut<T> {
+        CursorMut {
+            cur: None,
+            list: self,
+            index: None,
         }
     }
 
