@@ -10,12 +10,6 @@ pub struct LinkedList<T> {
     _boo: PhantomData<T>,
 }
 
-pub struct CursorMut<'a, T> {
-    cur: Link<T>,
-    list: &'a mut LinkedList<T>,
-    index: Option<usize>,
-}
-
 type Link<T> = Option<NonNull<Node<T>>>;
 
 struct Node<T> {
@@ -444,7 +438,105 @@ unsafe impl<'a, T: Send> Send for Iter<'a, T> {}
 unsafe impl<'a, T: Sync> Sync for Iter<'a, T> {}
 
 unsafe impl<'a, T: Send> Send for IterMut<'a, T> {}
+
 unsafe impl<'a, T: Sync> Sync for IterMut<'a, T> {}
+
+pub struct CursorMut<'a, T> {
+    cur: Link<T>,
+    list: &'a mut LinkedList<T>,
+    index: Option<usize>,
+}
+
+impl<'a, T> CursorMut<'a, T> {
+    pub fn index(&self) -> Option<usize> {
+        self.index
+    }
+
+    pub fn move_next(&mut self) {
+        if let Some(cur) = self.cur {
+            unsafe {
+                // We're on a real element, go to its next (back)
+                self.cur = (*cur.as_ptr()).back;
+                if self.cur.is_some() {
+                    *self.index.as_mut().unwrap() += 1;
+                } else {
+                    // We just walked to the ghost, no more index
+                    self.index = None;
+                }
+            }
+        } else if !self.list.is_empty() {
+            // We're at the ghost, and there is a real front, so move to it!
+            self.cur = self.list.front;
+            self.index = Some(0)
+        } else {
+            // We're at the ghost, but that's the only element... do nothing
+        }
+    }
+
+    pub fn move_prev(&mut self) {
+        if let Some(cur) = self.cur {
+            unsafe {
+                // We're on a real element, go to its previous (front)
+                self.cur = (*cur.as_ptr()).front;
+                if self.cur.is_some() {
+                    *self.index.as_mut().unwrap() += 1;
+                } else {
+                    // We just walked to the ghost, no more index
+                    self.index = None;
+                }
+            }
+        } else if !self.list.is_empty() {
+            // We're at the ghost, and there is a real back, so move to it!
+            self.cur = self.list.back;
+            self.index = Some(self.list.len - 1)
+        } else {
+            // We're at the ghost, but that's the only element... do nothing
+        }
+    }
+
+    pub fn current(&mut self) -> Option<&mut T> {
+        unsafe { self.cur.map(|node| &mut (*node.as_ptr()).elem) }
+    }
+
+    pub fn peek_next(&mut self) -> Option<&mut T> {
+        unsafe {
+            self.cur
+                .and_then(|node| (*node.as_ptr()).back)
+                .map(|node| &mut (*node.as_ptr()).elem)
+        }
+    }
+
+    pub fn peek_prev(&mut self) -> Option<&mut T> {
+        unsafe {
+            self.cur
+                .and_then(|node| (*node.as_ptr()).front)
+                .map(|node| &mut (*node.as_ptr()).elem)
+        }
+    }
+
+    pub fn split_before(&mut self) -> LinkedList<T> {
+        if let Some(cur) = self.cur {
+            // We are pointing at a real element, so the list is non-empty.
+            unsafe {
+                // Current state
+                let old_len = self.list.len;
+                let old_idx = self.index.unwrap();
+                let prev = (*cur.as_ptr()).front;
+
+                // What self will become
+                let new_len = old_len - old_idx;
+                let new_front = self.cur;
+                let new_back = self.list.back;
+                let new_idx = Some(0);
+
+                // What the output will become
+
+                // todo: in progress
+            }
+        }
+        LinkedList::new()
+    }
+}
 
 #[cfg(test)]
 mod test {
