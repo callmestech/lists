@@ -36,6 +36,28 @@ impl<T> LinkedList<T> {
         }
     }
 
+    pub fn group_anagrams(strs: Vec<String>) -> Vec<Vec<String>> {
+        if strs.len() == 1 {
+            return vec![strs];
+        }
+
+        let mut map: std::collections::HashMap<String, Vec<String>> =
+            std::collections::HashMap::new();
+
+        strs.iter().for_each(|s| {
+            let mut chars: Vec<char> = s.chars().collect();
+            chars.sort();
+            let sorted_string: String = chars.into_iter().collect();
+
+            if let Some(values) = map.get_mut(&sorted_string) {
+                values.push(s.to_string());
+            } else {
+                map.insert(sorted_string, vec![]);
+            }
+        });
+        map.values().cloned().collect()
+    }
+
     pub fn push_front(&mut self, elem: T) {
         // SAFETY: it's a linked-list, what do you want?
         unsafe {
@@ -530,19 +552,79 @@ impl<'a, T> CursorMut<'a, T> {
                 let new_idx = Some(0);
 
                 // What the output will become
+                let output_len = old_len - new_len;
+                let output_front = self.list.front;
+                let output_back = prev;
 
-                // todo: in progress
+                // Break the links between cur and prev
+                if let Some(prev) = prev {
+                    (*cur.as_ptr()).front = None;
+                    (*prev.as_ptr()).back = None;
+                }
+
+                // Produce the result:
+                self.list.len = new_len;
+                self.list.front = new_front;
+                self.list.back = new_back;
+                self.index = new_idx;
+
+                LinkedList {
+                    front: output_front,
+                    back: output_back,
+                    len: output_len,
+                    _boo: PhantomData,
+                }
             }
+        } else {
+            // We're at the ghost, just replace our list with an empty one.
+            // No other state needs to be changed.
+            std::mem::replace(self.list, LinkedList::new())
         }
-        LinkedList::new()
     }
 }
 
 #[cfg(test)]
 mod test {
-    use std::collections::HashMap;
+    use std::{arch::x86_64::_MM_EXCEPT_INEXACT, collections::HashMap};
 
     use super::LinkedList;
+
+    pub fn group_anagrams(strs: Vec<String>) -> Vec<Vec<String>> {
+        if strs.len() == 1 {
+            return vec![strs];
+        }
+
+        let mut map: std::collections::HashMap<String, Vec<String>> =
+            std::collections::HashMap::new();
+
+        strs.into_iter().for_each(|s| {
+            let mut chars: Vec<char> = s.chars().collect();
+            chars.sort();
+            let sorted_string: String = chars.into_iter().collect();
+            println!("not sorted {}, sorted {}", s, sorted_string);
+
+            if let Some(values) = map.get_mut(&sorted_string) {
+                values.push(s)
+            } else {
+                map.insert(sorted_string, vec![s]);
+            }
+            println!("{:#?}", map);
+        });
+
+        map.values().cloned().collect()
+    }
+
+    pub fn group_anagrams_2(strs: Vec<String>) -> Vec<Vec<String>> {
+        let mut map: HashMap<Vec<u8>, Vec<String>> = HashMap::new();
+        for s in strs {
+            let mut sorted = s.as_bytes().to_vec();
+            sorted.sort();
+            map.entry(sorted).or_insert(Vec::new()).push(s);
+            println!("{:#?}", map);
+        }
+
+        map.into_iter().map(|(_, v)| v).collect()
+    }
 
     fn generate_test() -> LinkedList<i32> {
         list_from(&[0, 1, 2, 3, 4, 5, 6])
@@ -772,5 +854,17 @@ mod test {
         assert_eq!(map.remove(&list2), Some("list2"));
 
         assert!(map.is_empty())
+    }
+
+    #[test]
+    fn test_anagram() {
+        let list1: Vec<String> = vec!["eat", "tea", "tan", "ate", "nat", "bat"]
+            .iter()
+            .map(|s| s.to_string())
+            .collect();
+        let res = group_anagrams_2(list1);
+        let expected: Vec<Vec<String>> = vec![vec![]];
+        println!("kek");
+        assert_eq!(res == expected, true);
     }
 }
