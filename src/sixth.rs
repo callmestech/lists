@@ -567,7 +567,6 @@ impl<'a, T> CursorMut<'a, T> {
                 self.list.front = new_front;
                 self.list.back = new_back;
                 self.index = new_idx;
-
                 LinkedList {
                     front: output_front,
                     back: output_back,
@@ -581,50 +580,25 @@ impl<'a, T> CursorMut<'a, T> {
             std::mem::replace(self.list, LinkedList::new())
         }
     }
+
+    pub fn splice_before(&mut self, mut input: LinkedList<T>) {
+        todo!()
+        // if input.is_empty() {
+        //     // input is empty, do nothing
+        // } else if let Some(cur) = self.cur {
+        //     if let Some(0) = self.index {
+        //         // We're appending to the frong, see append to back
+        //         // e
+        //     }
+        // }
+    }
 }
 
 #[cfg(test)]
 mod test {
-    use std::{arch::x86_64::_MM_EXCEPT_INEXACT, collections::HashMap};
+    use std::collections::HashMap;
 
     use super::LinkedList;
-
-    pub fn group_anagrams(strs: Vec<String>) -> Vec<Vec<String>> {
-        if strs.len() == 1 {
-            return vec![strs];
-        }
-
-        let mut map: std::collections::HashMap<String, Vec<String>> =
-            std::collections::HashMap::new();
-
-        strs.into_iter().for_each(|s| {
-            let mut chars: Vec<char> = s.chars().collect();
-            chars.sort();
-            let sorted_string: String = chars.into_iter().collect();
-            println!("not sorted {}, sorted {}", s, sorted_string);
-
-            if let Some(values) = map.get_mut(&sorted_string) {
-                values.push(s)
-            } else {
-                map.insert(sorted_string, vec![s]);
-            }
-            println!("{:#?}", map);
-        });
-
-        map.values().cloned().collect()
-    }
-
-    pub fn group_anagrams_2(strs: Vec<String>) -> Vec<Vec<String>> {
-        let mut map: HashMap<Vec<u8>, Vec<String>> = HashMap::new();
-        for s in strs {
-            let mut sorted = s.as_bytes().to_vec();
-            sorted.sort();
-            map.entry(sorted).or_insert(Vec::new()).push(s);
-            println!("{:#?}", map);
-        }
-
-        map.into_iter().map(|(_, v)| v).collect()
-    }
 
     fn generate_test() -> LinkedList<i32> {
         list_from(&[0, 1, 2, 3, 4, 5, 6])
@@ -854,17 +828,5 @@ mod test {
         assert_eq!(map.remove(&list2), Some("list2"));
 
         assert!(map.is_empty())
-    }
-
-    #[test]
-    fn test_anagram() {
-        let list1: Vec<String> = vec!["eat", "tea", "tan", "ate", "nat", "bat"]
-            .iter()
-            .map(|s| s.to_string())
-            .collect();
-        let res = group_anagrams_2(list1);
-        let expected: Vec<Vec<String>> = vec![vec![]];
-        println!("kek");
-        assert_eq!(res == expected, true);
     }
 }
