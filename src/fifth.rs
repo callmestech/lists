@@ -34,7 +34,7 @@ impl<T> List<T> {
         unsafe {
             // Immediately convert the Box into a raw pointer
             let new_tail = Box::into_raw(Box::new(Node {
-                elem: elem,
+                elem,
                 next: null_mut(),
             }));
 
