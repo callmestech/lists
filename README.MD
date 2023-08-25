@@ -52,7 +52,7 @@
   - [x] 7.8 Send, Sync, and Compile Tests
   - [x] 7.9 An Introduction to Cursors
   - [x] 7.10 Implementing Cursors
-  - [ ] 7.11
+  - [ ] 7.11 Testing Cursors
   - [ ] 7.12
 - [ ] 8. A Bunch of Silly Lists
   - [ ] 8.1
