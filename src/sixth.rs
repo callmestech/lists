@@ -36,28 +36,6 @@ impl<T> LinkedList<T> {
         }
     }
 
-    pub fn group_anagrams(strs: Vec<String>) -> Vec<Vec<String>> {
-        if strs.len() == 1 {
-            return vec![strs];
-        }
-
-        let mut map: std::collections::HashMap<String, Vec<String>> =
-            std::collections::HashMap::new();
-
-        strs.iter().for_each(|s| {
-            let mut chars: Vec<char> = s.chars().collect();
-            chars.sort();
-            let sorted_string: String = chars.into_iter().collect();
-
-            if let Some(values) = map.get_mut(&sorted_string) {
-                values.push(s.to_string());
-            } else {
-                map.insert(sorted_string, vec![]);
-            }
-        });
-        map.values().cloned().collect()
-    }
-
     pub fn push_front(&mut self, elem: T) {
         // SAFETY: it's a linked-list, what do you want?
         unsafe {
@@ -327,6 +305,15 @@ pub struct IntoIter<T> {
     list: LinkedList<T>,
 }
 
+impl<T> IntoIterator for LinkedList<T> {
+    type IntoIter = IntoIter<T>;
+    type Item = T;
+
+    fn into_iter(self) -> Self::IntoIter {
+        IntoIter { list: self }
+    }
+}
+
 impl<'a, T> IntoIterator for &'a LinkedList<T> {
     type IntoIter = Iter<'a, T>;
     type Item = &'a T;
@@ -337,8 +324,8 @@ impl<'a, T> IntoIterator for &'a LinkedList<T> {
 }
 
 impl<'a, T> IntoIterator for &'a mut LinkedList<T> {
-    type Item = &'a mut T;
     type IntoIter = IterMut<'a, T>;
+    type Item = &'a mut T;
 
     fn into_iter(self) -> Self::IntoIter {
         self.iter_mut()
@@ -518,17 +505,31 @@ impl<'a, T> CursorMut<'a, T> {
 
     pub fn peek_next(&mut self) -> Option<&mut T> {
         unsafe {
-            self.cur
-                .and_then(|node| (*node.as_ptr()).back)
-                .map(|node| &mut (*node.as_ptr()).elem)
+            let next = if let Some(cur) = self.cur {
+                // Normal case, try to follow the cur node's back pointer
+                (*cur.as_ptr()).back
+            } else {
+                // Ghost case, try to use the list's front pointer
+                self.list.front
+            };
+
+            // Yield the element if the next node exists
+            next.map(|node| &mut (*node.as_ptr()).elem)
         }
     }
 
     pub fn peek_prev(&mut self) -> Option<&mut T> {
         unsafe {
-            self.cur
-                .and_then(|node| (*node.as_ptr()).front)
-                .map(|node| &mut (*node.as_ptr()).elem)
+            let prev = if let Some(cur) = self.cur {
+                // Normal case, try to follow the cur node's front pointer
+                (*cur.as_ptr()).front
+            } else {
+                // Ghost case, try to use the list's back pointer
+                self.list.back
+            };
+
+            // Yield the element if the prev node exists
+            prev.map(|node| &mut (*node.as_ptr()).elem)
         }
     }
 
@@ -1095,6 +1096,8 @@ mod test {
         assert_eq!(m.iter().cloned().collect::<Vec<_>>(), &[1, 8, 2, 3, 4, 5, 6]);
         */
 
+        let mut m: LinkedList<u32> = LinkedList::new();
+        m.extend([1, 8, 2, 3, 4, 5, 6]);
         let mut cursor = m.cursor_mut();
         cursor.move_next();
         let mut p: LinkedList<u32> = LinkedList::new();
@@ -1134,7 +1137,11 @@ mod test {
         );
     }
 
-    fn check_links<T>(_list: &LinkedList<T>) {
-        // would be good to do this!
+    fn check_links<T: Eq + std::fmt::Debug>(list: &LinkedList<T>) {
+        let from_front: Vec<_> = list.iter().collect();
+        let from_back: Vec<_> = list.iter().rev().collect();
+        let re_reved: Vec<_> = from_back.into_iter().rev().collect();
+
+        assert_eq!(from_front, re_reved);
     }
 }
