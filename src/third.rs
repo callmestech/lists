@@ -19,7 +19,7 @@ impl<T> List<T> {
     pub fn prepend(&self, elem: T) -> List<T> {
         List {
             head: Some(Arc::new(Node {
-                elem: elem,
+                elem,
                 next: self.head.clone(),
             })),
         }

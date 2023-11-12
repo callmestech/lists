@@ -872,7 +872,7 @@ mod test {
             assert_eq!(6 - i as i32, *elem);
         }
         let mut n = LinkedList::new();
-        assert_eq!(n.iter().rev().next(), None);
+        assert_eq!(n.iter().next_back(), None);
         n.push_front(4);
         let mut it = n.iter().rev();
         assert_eq!(it.size_hint(), (1, Some(1)));
@@ -982,7 +982,7 @@ mod test {
         let list: LinkedList<i32> = (0..10).collect();
         assert_eq!(format!("{:?}", list), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]");
 
-        let list: LinkedList<&str> = vec!["just", "one", "test", "more"]
+        let list: LinkedList<&str> = ["just", "one", "test", "more"]
             .iter()
             .copied()
             .collect();
